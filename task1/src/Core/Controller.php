@@ -4,6 +4,8 @@ namespace App\Core;
 
 use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\StreamFactoryInterface as StreamFactory;
+use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 
 class Controller
 {
@@ -27,5 +29,17 @@ class Controller
     {
         $this->container = $container;
         $this->request = $request;
+    }
+
+    public function response(int $code = 200, string $body = '')
+    {
+        return $this->container
+            ->get(ResponseFactory::class)
+            ->createResponse($code)
+            ->withBody(
+                $this->container
+                    ->get(StreamFactory::class)
+                    ->createStream($body)
+            );
     }
 }

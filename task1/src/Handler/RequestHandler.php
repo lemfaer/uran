@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Core;
+namespace App\Handler;
 
 use SplQueue;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 class RequestHandler implements RequestHandlerInterface
 {
     /**
-     * List of middlewares to run
+     * List of middleware to run
      *
      * @var \SplQueue
      */
-    protected SplQueue $middlewares;
+    protected SplQueue $middleware;
 
     /**
      * RequestHandler construct
      *
-     * @param SplQueue $middlewares
+     * @param SplQueue $middleware
      */
-    public function __construct(SplQueue $middlewares)
+    public function __construct(SplQueue $middleware)
     {
-        $this->middlewares = $middlewares;
+        $this->middleware = $middleware;
     }
 
     /**
@@ -31,8 +31,8 @@ class RequestHandler implements RequestHandlerInterface
      *
      * May call other collaborating code to generate the response.
      */
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(Request $request): Response
     {
-        return $this->middlewares->dequeue()->process($request, $this);
+        return $this->middleware->dequeue()->process($request, $this);
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Core;
+use App\Core\Controller;
 
 class HelloController extends Controller
 {
-    public function getHelloAction()
+    public function greet()
     {
-        // return
+        return $this->response(200, "hello");
     }
 }

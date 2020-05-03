@@ -4,12 +4,12 @@ namespace App\Handler;
 
 use App\Core\Router;
 use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Container\ContainerInterface as Container;
 
-class MainHandler implements MiddlewareInterface
+class ExecuteController implements MiddlewareInterface
 {
     /**
      * @var \Psr\Container\ContainerInterface
@@ -33,7 +33,7 @@ class MainHandler implements MiddlewareInterface
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
      */
-    public function process(Request $request, RequestHandlerInterface $next): Response
+    public function process(Request $request, RequestHandler $next): Response
     {
         [$handler, $args] = $this->dispatch($request);
 
@@ -50,16 +50,16 @@ class MainHandler implements MiddlewareInterface
         /**
          * @var \App\Core\Router
          */
-        $router = $container->get(Router::class);
+        $router = $this->container->get(Router::class);
 
         $server = $request->getServerParams();
-        $uri = $server["REQUEST_URI"];
+        $uri = rtrim($server["REQUEST_URI"], "/");
         $method = $server["REQUEST_METHOD"];
 
-        [$handler, $args] = $router->dispatch($uri, $method);
+        [$handler, $args] = $router->dispatch($method, $uri);
         [$class, $method] = $handler;
 
-        $controller = $container->get($class);
+        $controller = $this->container->get($class);
 
         return [[$controller, $method], $args];
     }

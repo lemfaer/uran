@@ -56,7 +56,10 @@ class Container implements ContainerInterface
             }
 
             if (array_key_exists($id, $this->factories)) {
-                return $this->factories[$id]($this);
+                $entry = $this->factories[$id]($this);
+                $this->entries[$id] = $entry;
+
+                return $entry;
             }
         } catch (Throwable $e) {
             $m = $e->getMessage();
