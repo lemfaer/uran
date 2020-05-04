@@ -2,19 +2,16 @@
 
 namespace App\Factory;
 
-use App\Core\Router;
-use App\Core\Container;
+use PDO;
+use App\Core\{Router, Container};
 use App\Handler\RequestHandler;
-use App\Controller\HelloController;
+use App\Controller\{HelloController, PageController};
+use App\Repository\PageRepository;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\{ServerRequestInterface, ResponseFactoryInterface, StreamFactoryInterface};
 use Psr\Http\Server\RequestHandlerInterface;
-use Laminas\Diactoros\ResponseFactory;
-use Laminas\Diactoros\StreamFactory;
-use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
-use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Laminas\Diactoros\{ResponseFactory, StreamFactory};
+use Laminas\HttpHandlerRunner\Emitter\{EmitterInterface, SapiEmitter};
 
 class ContainerFactory extends Container
 {
@@ -43,7 +40,10 @@ class ContainerFactory extends Container
             ServerRequestInterface::class => [new RequestFactory(), "create"],
             RequestHandlerInterface::class => [new HandlerFactory(), "create"],
             HelloController::class => [new ControllerFactory(HelloController::class), "create"],
+            PageController::class => [new ControllerFactory(PageController::class), "create"],
+            PageRepository::class => [new RepositoryFactory(PageRepository::class), "create"],
             Router::class => [new RouterFactory(), "create"],
+            PDO::class => [new DbConnectionFactory(), "create"],
         ];
     }
 

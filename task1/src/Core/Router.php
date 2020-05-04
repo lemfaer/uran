@@ -5,6 +5,10 @@ namespace App\Core;
 use Exception;
 use ArrayObject;
 
+use function strcasecmp;
+use function preg_match;
+use function array_slice;
+
 class Router extends ArrayObject
 {
     /**
@@ -20,7 +24,7 @@ class Router extends ArrayObject
      */
     function dispatch(string $method, string $url): array
     {
-        foreach ($this as list($allowed, $pattern, $handler)) {
+        foreach ($this as [$allowed, $pattern, $handler]) {
             if (
                 preg_match($pattern, $url, $args)
                 && !strcasecmp($method, $allowed)

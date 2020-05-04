@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Handler\ErrorHandler;
 use App\Factory\ContainerFactory;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -13,6 +14,8 @@ error_reporting(E_ALL);
 
 // composer autoloader
 require_once __DIR__ . "/../vendor/autoload.php";
+
+set_exception_handler([new ErrorHandler(), "exceptionHandler"]);
 
 $container = ContainerFactory::createContainer([
     "routes" => require_once __DIR__ . "/../etc/routes.php",
@@ -28,8 +31,3 @@ $container
                 $container->get(Request::class)
             )
         );
-
-// header("Content-Type: text/plain");
-// var_export($response);
-
-// print("hello");
