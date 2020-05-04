@@ -16,6 +16,11 @@ use Laminas\HttpHandlerRunner\Emitter\{EmitterInterface, SapiEmitter};
 class ContainerFactory extends Container
 {
     /**
+     * @var \Psr\Container\ContainerInterface|null
+     */
+    protected static ?ContainerInterface $container = null;
+
+    /**
      * Container default entries
      *
      * @return array
@@ -48,13 +53,22 @@ class ContainerFactory extends Container
     }
 
     /**
-     * Create new container
+     * Get application container
      *
      * @param array $entries container entries
      *
      * @return \Psr\Container\ContainerInterface
      */
-    public static function createContainer(array $entries = []): ContainerInterface
+    public static function getContainer(array $entries = []): ContainerInterface
+    {
+        if (!isset(static::$container)) {
+            static::$container = static::createContainer($entries);
+        }
+
+        return static::$container;
+    }
+
+    protected static function createContainer(array $entries = []): ContainerInterface
     {
         $entries += static::getEntries();
         $factories = static::getFactories();

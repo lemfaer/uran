@@ -5,6 +5,7 @@ namespace App\Repository;
 use PDO;
 use PDOStatement;
 use Exception;
+use Traversable;
 use App\Core\Repository;
 use App\Model\Page;
 
@@ -112,11 +113,11 @@ class PageRepository extends Repository
     /**
      * Create Page objects based on db result
      *
-     * @param PDOStatement $result
+     * @param Traversable $result
      *
      * @return array of \App\Model\Page
      */
-    protected function buildPages(PDOStatement $result): array
+    protected function buildPages(Traversable $result): array
     {
         $pages = [];
 
