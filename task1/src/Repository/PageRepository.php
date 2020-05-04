@@ -9,6 +9,7 @@ use App\Core\Repository;
 use App\Model\Page;
 
 use function sprintf;
+use function str_repeat;
 use function array_column;
 
 class PageRepository extends Repository
@@ -51,10 +52,15 @@ class PageRepository extends Repository
     {
         $sql = "SELECT * FROM pages %s LIMIT %d OFFSET %d";
         $parts = ['', $limit, $offset];
+        $params = [];
 
         if ($ids !== null) {
             if ($ids) {
-                $parts[0] = sprintf("WHERE id IN (%s)", implode(',', $ids));
+                $params = $ids;
+                $parts[0] = sprintf(
+                    "WHERE id IN (%s)",
+                    str_repeat("?,", count($ids) - 1) . '?'
+                );
             } else {
                 return [];
             }
@@ -62,7 +68,7 @@ class PageRepository extends Repository
 
         $query = sprintf($sql, ...$parts);
         $statm = $this->db->prepare($query);
-        $statm->execute();
+        $statm->execute($params);
 
         $pages = $this->buildPages($statm);
         $ids = array_column($pages, "id");
@@ -93,12 +99,12 @@ class PageRepository extends Repository
                 WHERE p.id IN (%s)
                 LIMIT %d
             SQL,
-            implode(',', $ids),
+            str_repeat("?,", count($ids) - 1) . '?',
             $limit
         );
 
         $statm = $this->db->prepare($query);
-        $statm->execute();
+        $statm->execute($ids);
 
         return $this->buildPages($statm);
     }
