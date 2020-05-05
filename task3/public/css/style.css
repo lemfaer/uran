@@ -1,0 +1,44 @@
+.ql-container, .ql-toolbar {
+	border-color: #eceae6 !important;
+}
+
+.capitalized, .post_meta_top, .post_title span, .comment-meta cite {
+	text-transform: capitalize;
+}
+
+.stander_blog_single_post .post_content {
+	padding: 0;
+	white-space: inherit;
+}
+
+.comments-area .comment-list li article .comment-content {
+	margin-left: 0;
+}
+
+.ql-editor p {
+	margin-bottom: 0.85rem !important;
+}
+
+textarea.comment-area {
+	resize: vertical;
+	min-height: 12rem;
+	max-height: 32rem;
+}
+
+@media screen and (min-width: 768px) {
+	.bricklayer-column-sizer {
+		/* divide by 2. */
+		width: 50% !important;
+	}
+}
+
+@media screen and (min-width: 1000px) {
+	.bricklayer-column-sizer {
+		/* divide by 3. */
+		width: 33.3% !important;
+	}
+}
+
+a[rel=tag] {
+	cursor: default;
+}

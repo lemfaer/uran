@@ -1,0 +1,80 @@
+{% extends "base" %}
+
+{% block title %}
+	{% if category %}
+		{{ category | capitalize }}
+		products
+	{% else %}
+		Main page
+	{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bricklayer/0.4.2/bricklayer.min.css">
+{% endblock %}
+
+{% block javascripts %}
+	<script nonce="{{ csp_nonce }}" src="//cdnjs.cloudflare.com/ajax/libs/bricklayer/0.4.2/bricklayer.min.js"></script>
+	<script nonce="{{ csp_nonce }}">var bricklayer = new Bricklayer(document.querySelector(".bricklayer"));</script>
+{% endblock %}
+
+{% block content %}
+	<div class="blog_posts stander_blog one_colo_stander_blog">
+		<div class="row">
+			<div class="bricklayer">
+				{% for entity in entities %}
+					<article data-id="{{ entity.id }}">
+						<div class="post_img">
+							<img src="{{ entity.image }}">
+						</div>
+						<h5 class="post_title">
+							<a href="{{ url("product_view", { id: entity.id }) }}">
+								<span>{{ entity.title }}</span>
+							</a>
+						</h5>
+						<div class="post_meta_top">
+							<span class="post_meta_category">
+								<a href="{{ route("list_pagination_2", { name: entity.category.name, n: 1 }) }}">
+									{{ entity.category.name }}
+								</a>
+							</span>
+						</div>
+						<div class="post_content">
+							<p>{{ entity.description }}</p>
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	{% if pcount > 1 %}
+		<nav class="pagination_holder">
+			<ul class="pagination circle-pagination mb-80px">
+				{% set rname = category ? "list_pagination_2" : "list_pagination" %}
+				{% set start = (page - pcount / 2) %}
+				{% set start = (start > 0 ? start : 1) | round %}
+				{% set end = (start + pcount - 1) | round %}
+
+				{% for i in range(start, end) %}
+					<li class="page-item {{ page == i ? "active" : "" }}">
+						<a class="page-link" href="{{ route(rname,
+								{ name: category, n: i }) }}">
+							{{ i }}
+						</a>
+					</li>
+				{% endfor %}
+
+				{% if end > page %}
+					<li class="page-item">
+						<a class="page-link" href="{{ route(rname,
+								{ name: category, n: page + 1 }) }}">
+							<span>&gt;</span>
+							<span class="sr-only">Next</span>
+						</a>
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
+	{% endif %}
+{% endblock %}
