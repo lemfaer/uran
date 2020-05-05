@@ -1,0 +1,43 @@
+{% extends "base" %}
+
+{% block title %}
+	{{ entity.title }}
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="//cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+	<script nonce="{{ csp_nonce }}" defer>
+		video_width("iframe.ql-video", ".ql-editor", .8);
+	</script>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-lg-10 offset-lg-1 mt-10px">
+			<div class="blog_posts stander_blog_single_post">
+				<article>
+					<h3 class="post_title">
+						<span>{{ entity.title }}</span>
+						<a href="{{ url("article_write", { id: entity.id }) }}">
+							(<i>edit</i>)
+						</a>
+					</h3>
+					<div class="post_meta_top">
+						<span class="post_meta_category">
+							<a href="{{ route("list_pagination_2", { name: entity.category.name, n: 1 }) }}">
+								{{ entity.category.name }}
+							</a>
+						</span>
+					</div>
+					<div class="post_content ql-editor">
+						{{ entity.content | raw }}
+					</div>
+					<div class="separator-line"></div>
+				</article>
+			</div>
+		</div>
+	</div>
+{% endblock %}

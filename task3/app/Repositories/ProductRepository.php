@@ -11,6 +11,20 @@ use App\Models\Category;
 class ProductRepository
 {
     /**
+     * Get single product
+     *
+     * @param int $id
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException product not exists
+     *
+     * @return \App\Models\Product
+     */
+    public function getProductById(int $id): Product
+    {
+        return Product::findOrFail($id);
+    }
+
+    /**
      * Select multiple products (in category)
      *
      * @param string|null $category name
@@ -24,7 +38,7 @@ class ProductRepository
     public function getProducts(?string $category, int $limit, int $offset): Collection
     {
         return $this
-            ->productQuery($category)
+            ->queryByCategory($category)
             ->skip($offset)
             ->take($limit)
             ->get();
@@ -42,11 +56,11 @@ class ProductRepository
     public function getProductCount(?string $category): int
     {
         return $this
-            ->productQuery($category)
+            ->queryByCategory($category)
             ->count();
     }
 
-    protected function productQuery(?string $name): Builder
+    protected function queryByCategory(?string $name): Builder
     {
         if (isset($name)) {
             $category = Category::query()
