@@ -24,15 +24,15 @@
 						</button>
 						<div class="collapse navbar-collapse" id="navbarNavDropdown">
 							<ul class="navbar-nav ml-auto">
-								{% if auth_user() %}
-									<li class="nav-item">
-										<a href="{{ url("register") }}" class="nav-link">
-											Regiser
-										</a>
-									</li>
+								{% if not auth_user() %}
 									<li class="nav-item">
 										<a href="{{ url("login") }}" class="nav-link">
 											Login
+										</a>
+									</li>
+									<li class="nav-item">
+										<a href="{{ url("register") }}" class="nav-link">
+											Regiser
 										</a>
 									</li>
 								{% else %}
@@ -43,8 +43,13 @@
 									</li>
 									<li class="nav-item capitalized">
 										<i class="nav-link">
-											{{ app.user.public }}
+											{{ auth_user().name }}
 										</i>
+									</li>
+									<li class="nav-item">
+										<a href="{{ url("logout") }}" class="nav-link">
+											Logout
+										</a>
 									</li>
 								{% endif %}
 							</ul>
