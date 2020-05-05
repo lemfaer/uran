@@ -21,9 +21,11 @@
 				<article>
 					<h3 class="post_title">
 						<span>{{ entity.title }}</span>
-						<a href="{{ url("article_write", { id: entity.id }) }}">
-							(<i>edit</i>)
-						</a>
+						{% if auth_user() %}
+							<a href="{{ route("product_edit", { id: entity.id }) }}">
+								(<i>edit</i>)
+							</a>
+						{% endif %}
 					</h3>
 					<div class="post_meta_top">
 						<span class="post_meta_category">

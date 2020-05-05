@@ -36,3 +36,14 @@ Route::get("/category/{name}/page-{n}", "MainController@category")
 Route::get("/product/{id}", "ProductController@view")
     ->where(["id" => "\d+"])
     ->name("product_view");
+
+Route::get("/product/new", "ProductController@edit")
+    ->name("product_new");
+
+Route::get("/product/edit/{id}", "ProductController@edit")
+    ->where(["id" => "\d+"])
+    ->name("product_edit");
+
+Route::post("/product/edit/{id?}", "ProductController@edit_submit")
+    ->where(["id" => "\d+"])
+    ->name("product_edit_submit");
