@@ -13,7 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Auth::routes([
+    "reset" => false,
+    "confirm" => false,
+    "verify" => false,
+]);
 
 Route::get('/logout', 'Auth\LoginController@logout')->name("logout");
 
