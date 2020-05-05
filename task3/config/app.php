@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        TwigBridge\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -223,6 +224,7 @@ return [
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
         'Str' => Illuminate\Support\Str::class,
+        'Twig' => TwigBridge\Facade\Twig::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
